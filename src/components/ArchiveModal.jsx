@@ -96,20 +96,22 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
           <button className="archive-back" onClick={onClose}>
             <i className="fa-solid fa-arrow-left"></i> Back
           </button>
+          
           <div className="archive-tabs">
             <button
               className={activeTab === 'technical' ? 'active' : ''}
               onClick={() => setActiveTab('technical')}
             >
-              Technical
+              <span>Technical</span>
             </button>
             <button
               className={activeTab === 'digital' ? 'active' : ''}
               onClick={() => setActiveTab('digital')}
             >
-              Digital
+              <span>Digital</span>
             </button>
           </div>
+
           <button className="icon-toggle" onClick={onToggleTheme} aria-label="Toggle theme">
             <i className={`fa-solid ${isLight ? 'fa-moon' : 'fa-sun'}`}></i>
           </button>
@@ -118,75 +120,92 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
 
       <div className="archive-body">
         <div className="container">
-          {activeTab === 'technical' && (
-            <div className="archive-tab-panel active">
-              <span className="section-tag">Archive</span>
-              <h2 className="section-title">
-                Technical <span className="accent">Projects</span>
-              </h2>
-              <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
-                A complete collection of technical work, systems, and digital projects.
-              </p>
-              <div className="tech-list">
-                {techProjects.map((p, i) => (
-                  <div key={i} className="tech-row">
-                    <span className="idx">{String(i + 1).padStart(2, '0')}</span>
-                    <div>
-                      <h4>{p.title}</h4>
-                      <p>{p.desc}</p>
-                      <span className="stack-label">{p.stack}</span>
-                      <div className="stack-icons">
-                        {p.icons.map((ic, icIdx) => (
-                          <span key={icIdx}>
-                            <i className={ic}></i>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <a href="#view" className="ext-link" onClick={(e) => e.preventDefault()}>
-                      <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Keyed Animated Wrapper for Smooth Transition */}
+          <div key={activeTab} className="archive-tab-content-animated">
+            {activeTab === 'technical' && (
+              <div className="archive-tab-panel active">
+                <div className="archive-header-anim">
+                  <span className="section-tag">Archive</span>
+                  <h2 className="section-title">
+                    Technical <span className="accent">Projects</span>
+                  </h2>
+                  <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
+                    A complete collection of technical work, systems, and digital projects.
+                  </p>
+                </div>
 
-          {activeTab === 'digital' && (
-            <div className="archive-tab-panel active">
-              <span className="section-tag">Digital Projects</span>
-              <h2 className="section-title">
-                Beyond <span className="accent">Code</span>
-              </h2>
-              <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
-                Creative, visual, and content projects developed alongside my technical work.
-              </p>
-              <div className="digital-grid">
-                {digitalProjects.map((p, i) => {
-                  const hue = 20 + i * 45;
-                  return (
-                    <div key={i} className="digital-card">
-                      <div className="mock-grid">
-                        {Array.from({ length: 15 }).map((_, s) => (
-                          <div
-                            key={s}
-                            style={{
-                              background: `hsl(${hue + s * 7}, 60%, ${30 + (s % 3) * 10}%)`
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <div className="dc-body">
-                        <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                <div className="tech-list">
+                  {techProjects.map((p, i) => (
+                    <div
+                      key={i}
+                      className="tech-row archive-item-stagger"
+                      style={{ '--stagger-idx': i }}
+                    >
+                      <span className="idx">{String(i + 1).padStart(2, '0')}</span>
+                      <div>
                         <h4>{p.title}</h4>
                         <p>{p.desc}</p>
+                        <span className="stack-label">{p.stack}</span>
+                        <div className="stack-icons">
+                          {p.icons.map((ic, icIdx) => (
+                            <span key={icIdx}>
+                              <i className={ic}></i>
+                            </span>
+                          ))}
+                        </div>
                       </div>
+                      <a href="#view" className="ext-link" onClick={(e) => e.preventDefault()}>
+                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                      </a>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {activeTab === 'digital' && (
+              <div className="archive-tab-panel active">
+                <div className="archive-header-anim">
+                  <span className="section-tag">Digital Projects</span>
+                  <h2 className="section-title">
+                    Beyond <span className="accent">Code</span>
+                  </h2>
+                  <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
+                    Creative, visual, and content projects developed alongside my technical work.
+                  </p>
+                </div>
+
+                <div className="digital-grid">
+                  {digitalProjects.map((p, i) => {
+                    const hue = 20 + i * 45;
+                    return (
+                      <div
+                        key={i}
+                        className="digital-card archive-item-stagger"
+                        style={{ '--stagger-idx': i }}
+                      >
+                        <div className="mock-grid">
+                          {Array.from({ length: 15 }).map((_, s) => (
+                            <div
+                              key={s}
+                              style={{
+                                background: `hsl(${hue + s * 7}, 60%, ${30 + (s % 3) * 10}%)`
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <div className="dc-body">
+                          <span className="num">{String(i + 1).padStart(2, '0')}</span>
+                          <h4>{p.title}</h4>
+                          <p>{p.desc}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="archive-cta">
             <h3>

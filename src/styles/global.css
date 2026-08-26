@@ -987,6 +987,56 @@ section {
 }
 
 /* ===================================================================
+   SECTION DIVIDER & MARQUEE
+=================================================================== */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), rgba(var(--accent-rgb), 0.2), var(--border), transparent);
+  margin: 0;
+}
+
+.marquee-section {
+  padding: 3rem 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  position: relative;
+  z-index: 1;
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marqueeScroll 30s linear infinite;
+}
+
+.marquee-track span {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  color: var(--text-faint);
+  padding: 0 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0.3;
+}
+
+.marquee-track span i {
+  font-size: 0.8em;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===================================================================
    WORK GALLERY (3D COVERFLOW)
 =================================================================== */
 .work-head {
@@ -1973,7 +2023,7 @@ section {
 }
 
 /* ===================================================================
-   ARCHIVE OVERLAY
+   ARCHIVE OVERLAY & KINETIC TAB TRANSITIONS
 =================================================================== */
 .archive-overlay {
   position: fixed;
@@ -1996,7 +2046,7 @@ section {
 .archive-bar {
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 20;
   padding: 1.2rem 0;
   background: var(--navbar-bg-scrolled);
   backdrop-filter: blur(20px);
@@ -2030,9 +2080,11 @@ section {
   border-color: var(--accent);
 }
 
+/* Animated Underline Tabs */
 .archive-tabs {
   display: flex;
-  gap: 2.2rem;
+  gap: 2rem;
+  position: relative;
 }
 
 .archive-tabs button {
@@ -2044,26 +2096,100 @@ section {
   text-transform: uppercase;
   color: var(--text-dim);
   cursor: pointer;
-  padding-bottom: 6px;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
+  padding: 0.4rem 0.6rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.archive-tabs button span {
+  position: relative;
+  z-index: 1;
+}
+
+.archive-tabs button::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.archive-tabs button:hover {
+  color: var(--text);
 }
 
 .archive-tabs button.active {
   color: var(--text);
-  border-color: var(--accent);
+}
+
+.archive-tabs button.active::after {
+  transform: scaleX(1);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
 }
 
 .archive-body {
   padding: 4rem 0 3rem;
+  min-height: 80vh;
 }
 
-.archive-tab-panel {
-  display: none;
+/* Main Tab Transition Animations */
+.archive-tab-content-animated {
+  animation: tabFadeSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
 }
 
-.archive-tab-panel.active {
-  display: block;
+.archive-header-anim {
+  animation: tabHeaderIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tabFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes tabHeaderIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered Children for Tech & Digital Items */
+.archive-item-stagger {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: itemCascadeIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(0.04s * var(--stagger-idx, 0) + 0.08s);
+  will-change: transform, opacity;
+}
+
+@keyframes itemCascadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tech-list {
@@ -2078,11 +2204,12 @@ section {
   align-items: flex-start;
   padding: 1.8rem 0;
   border-bottom: 1px solid var(--border-soft);
-  transition: all 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
 }
 
 .tech-row:hover {
-  transform: translateX(6px);
+  transform: translateX(8px);
+  border-bottom-color: rgba(var(--accent-rgb), 0.25);
 }
 
 .tech-row .idx {
