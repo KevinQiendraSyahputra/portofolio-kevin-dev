@@ -8,7 +8,7 @@ function Hero({ onShowToast }) {
   const [imgLoaded, setImgLoaded] = useState(true);
   const heroRef = useRef(null);
 
-  // 60fps Parallax scroll listener
+  // 60fps Scroll listener
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -43,14 +43,12 @@ function Hero({ onShowToast }) {
     onShowToast?.('📄 Add your resume file link here.');
   };
 
-  // Parallax translation rates
+  // Parallax & Disappear calculations
   const textTranslateX = -scrollY * 0.45;
-  const characterTranslateY = -scrollY * 0.15;
-  const characterScale = 1 + scrollY * 0.0003;
-  const badgeTopTranslateY = -scrollY * 0.35;
-  const badgeBottomTranslateY = -scrollY * 0.18;
-  const badgeLeftTranslateY = -scrollY * 0.28;
-  const auraScale = Math.max(0.7, 1 - scrollY * 0.001);
+  const characterTranslateY = -scrollY * 0.95; // Gerakan meluncur ke atas saat di-scroll
+  const characterScale = Math.max(0.8, 1 - scrollY * 0.0006); // Mengecil perlahan
+  const characterOpacity = Math.max(0, 1 - scrollY / 420); // Menghilang memudar elegan
+  const auraScale = Math.max(0.5, 1 - scrollY * 0.001);
 
   return (
     <section
@@ -63,21 +61,77 @@ function Hero({ onShowToast }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* HUGE OUTLINE TEXT BEHIND CHARACTER (Layer 1) */}
+      {/* 1. RUNNING TEXT LAYER (Di belakang karakter, z-index: 2) */}
       <div
-        className="hero-bg-text hero-bg-text-large"
+        className="hero-bg-text hero-bg-text-top"
         style={{
-          transform: `translate(calc(-50% + ${textTranslateX}px), -50%)`,
-          opacity: Math.max(0, 1 - scrollY / 650)
+          transform: `translate(calc(-50% + ${textTranslateX}px), 0)`,
+          opacity: Math.max(0, 0.85 - scrollY / 500)
         }}
       >
         <span>ALEX RIVERA &nbsp; PORTFOLIO &nbsp; ALEX RIVERA &nbsp; PORTFOLIO &nbsp;</span>
         <span>ALEX RIVERA &nbsp; PORTFOLIO &nbsp; ALEX RIVERA &nbsp; PORTFOLIO &nbsp;</span>
       </div>
 
-      <div className="container hero-container hero-container-large">
-        {/* LEFT COLUMN: INTRO CONTENT */}
-        <div className={`hero-content ${isVisible ? 'visible' : ''}`}>
+      <div className="container hero-container hero-container-layout">
+        {/* 2. CHARACTER VISUAL LAYER (z-index: 10, di depan teks berjalan & tanpa card) */}
+        <div className="hero-visual hero-visual-standalone">
+          {/* Glowing Aura */}
+          <div
+            className="hero-aura"
+            style={{
+              transform: `scale(${auraScale}) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)`,
+              opacity: Math.max(0, 1 - scrollY / 450)
+            }}
+          />
+
+          {/* Character Container */}
+          <div
+            className="hero-character-standalone"
+            style={{
+              transform: `perspective(1200px) rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg) translateY(${characterTranslateY}px) scale(${characterScale})`,
+              opacity: characterOpacity,
+              transition: 'transform 0.12s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.15s ease-out'
+            }}
+          >
+            {imgLoaded ? (
+              <img
+                src="/profile.png"
+                alt="Alex Rivera Character"
+                className="character-img-clean"
+                onError={() => setImgLoaded(false)}
+              />
+            ) : (
+              <div className="hero-avatar-fallback">
+                <span className="initials">AR</span>
+              </div>
+            )}
+          </div>
+
+          {/* Floating Badges */}
+          <div
+            className="floating-badge floating-badge--top"
+            style={{
+              transform: `translate(${mousePos.x * 16}px, ${-scrollY * 0.4}px)`,
+              opacity: characterOpacity
+            }}
+          >
+            <i className="fa-solid fa-briefcase"></i> 20+ Projects
+          </div>
+
+          <div
+            className="floating-badge floating-badge--bottom"
+            style={{
+              transform: `translate(${mousePos.x * -12}px, ${-scrollY * 0.25}px)`,
+              opacity: characterOpacity
+            }}
+          >
+            <i className="fa-solid fa-graduation-cap"></i> BSIT Graduate
+          </div>
+        </div>
+
+        {/* 3. CONTENT INTRO LAYER (Di bawah teks berjalan) */}
+        <div className={`hero-content hero-content-bottom ${isVisible ? 'visible' : ''}`}>
           <div className="badge">
             <span className="dot"></span> Available for Work
           </div>
@@ -100,83 +154,6 @@ function Hero({ onShowToast }) {
             <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
             <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter"><i className="fa-brands fa-x-twitter"></i></a>
             <a href="mailto:alex.rivera.dev@example.com" aria-label="Email"><i className="fa-solid fa-envelope"></i></a>
-          </div>
-        </div>
-
-        {/* RIGHT/CENTER: LARGE CHARACTER DISPLAY (Layer 2 & 3) */}
-        <div className="hero-visual hero-visual-large">
-          {/* Ambient Glowing Aura */}
-          <div
-            className="hero-aura hero-aura-large"
-            style={{
-              transform: `scale(${auraScale}) translate(${mousePos.x * 15}px, ${mousePos.y * 15}px)`,
-              opacity: Math.max(0.2, 1 - scrollY / 600)
-            }}
-          />
-
-          {/* Orbit Rings */}
-          <div
-            className="hero-orbits-wrap hero-orbits-large"
-            style={{
-              transform: `translate(${mousePos.x * 10}px, ${characterTranslateY * 0.5}px)`
-            }}
-          >
-            <div className="orbit orbit--1"><div className="orbit-dot"></div></div>
-            <div className="orbit orbit--2"><div className="orbit-dot"></div></div>
-            <div className="orbit orbit--3"><div className="orbit-dot"></div></div>
-          </div>
-
-          {/* Large Standalone Character Container */}
-          <div
-            className="hero-character-large-wrapper"
-            style={{
-              transform: `perspective(1200px) rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg) translateY(${characterTranslateY}px) scale(${characterScale})`,
-              transition: 'transform 0.12s cubic-bezier(0.2, 0.8, 0.4, 1)'
-            }}
-          >
-            {imgLoaded ? (
-              <div className="character-img-crop">
-                <img
-                  src="/profile.png"
-                  alt="Alex Rivera Character"
-                  className="character-img-full"
-                  onError={() => setImgLoaded(false)}
-                />
-                <div className="character-bottom-gradient"></div>
-              </div>
-            ) : (
-              <div className="hero-avatar hero-avatar-large">
-                <span className="initials">AR</span>
-              </div>
-            )}
-          </div>
-
-          {/* Floating Badges */}
-          <div
-            className="floating-badge floating-badge--top"
-            style={{
-              transform: `translate(${mousePos.x * 18}px, ${badgeTopTranslateY}px)`
-            }}
-          >
-            <i className="fa-solid fa-briefcase"></i> 20+ Projects
-          </div>
-
-          <div
-            className="floating-badge floating-badge--bottom"
-            style={{
-              transform: `translate(${mousePos.x * -12}px, ${badgeBottomTranslateY}px)`
-            }}
-          >
-            <i className="fa-solid fa-graduation-cap"></i> BSIT Graduate
-          </div>
-
-          <div
-            className="floating-badge floating-badge--left"
-            style={{
-              transform: `translate(${mousePos.x * 14}px, ${badgeLeftTranslateY}px)`
-            }}
-          >
-            <i className="fa-solid fa-code"></i> Full Stack
           </div>
         </div>
       </div>
