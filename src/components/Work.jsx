@@ -6,6 +6,7 @@ const works = [
     title: 'Campus Attendance System',
     desc: 'RFID-based attendance tracking with automated photo capture and email notifications for staff and administrators.',
     icon: 'fa-id-badge',
+    image: '/project1.png', // Ganti dengan path foto Anda di folder public/
     from: '#3a6df0',
     to: '#132059'
   },
@@ -13,6 +14,7 @@ const works = [
     title: 'Community Aid Tracker',
     desc: 'Disaster relief coordination platform for registering beneficiaries and monitoring distribution in real time.',
     icon: 'fa-hand-holding-heart',
+    image: '', // Kosongkan atau beri path foto
     from: '#4dbb8f',
     to: '#0f4b39'
   },
@@ -20,6 +22,7 @@ const works = [
     title: 'Fleet Ops Dashboard',
     desc: 'Terminal management system for monitoring driver attendance, routes, queues, and payments.',
     icon: 'fa-truck-fast',
+    image: '',
     from: '#f5a623',
     to: '#7a4d0d'
   },
@@ -27,6 +30,7 @@ const works = [
     title: 'DocuFlow',
     desc: 'Document tracking system for organizing, archiving, and approving official records with cloud sync.',
     icon: 'fa-file-shield',
+    image: '',
     from: '#c85fd6',
     to: '#4c2166'
   },
@@ -34,6 +38,7 @@ const works = [
     title: 'StayEasy Rentals',
     desc: 'Boarding house rental platform for managing listings, bookings, payments, and tenant reviews.',
     icon: 'fa-house-chimney',
+    image: '',
     from: '#5aa7e8',
     to: '#1c3c6e'
   },
@@ -41,6 +46,7 @@ const works = [
     title: 'PayTrack',
     desc: 'Employee payroll management system handling compensation, deductions, and centralized reporting.',
     icon: 'fa-money-check-dollar',
+    image: '',
     from: '#e85b5b',
     to: '#6e1f1f'
   }
@@ -52,7 +58,6 @@ function Work({ onOpenArchive }) {
   const [spacing, setSpacing] = useState(240);
   const touchStartRef = useRef(0);
 
-  // Responsif spacing coverflow
   useEffect(() => {
     const handleResize = () => {
       setSpacing(window.innerWidth < 640 ? 155 : 240);
@@ -70,7 +75,6 @@ function Work({ onOpenArchive }) {
     setActiveWork((prev) => (prev - 1 + works.length) % works.length);
   }, []);
 
-  // Autoplay slider
   useEffect(() => {
     const timer = setInterval(nextWork, 5000);
     return () => clearInterval(timer);
@@ -147,7 +151,11 @@ function Work({ onOpenArchive }) {
                         <span></span>
                       </div>
                       <div className="thumb-body">
-                        <i className={`fa-solid ${w.icon}`}></i>
+                        {w.image ? (
+                          <img src={w.image} alt={w.title} className="thumb-img" />
+                        ) : (
+                          <i className={`fa-solid ${w.icon}`}></i>
+                        )}
                       </div>
                     </div>
                   </div>

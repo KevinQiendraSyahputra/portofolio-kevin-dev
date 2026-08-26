@@ -54,19 +54,23 @@ const techProjects = [
 const digitalProjects = [
   {
     title: 'Creative Design Collection',
-    desc: 'A collection of original digital assets, templates, and visual elements created for marketing and branding.'
+    desc: 'A collection of original digital assets, templates, and visual elements created for marketing and branding.',
+    image: '/digital1.png' // Ganti dengan path foto Anda di folder public/
   },
   {
     title: 'Brand Asset Library',
-    desc: 'Organized workspace of design resources and reference material for efficient content production.'
+    desc: 'Organized workspace of design resources and reference material for efficient content production.',
+    image: ''
   },
   {
     title: 'Content Planning & Scheduling',
-    desc: 'A visual content planning system to organize posts, schedules, and publishing activities.'
+    desc: 'A visual content planning system to organize posts, schedules, and publishing activities.',
+    image: ''
   },
   {
     title: 'Social Media Content Kit',
-    desc: 'A collection of social templates, graphics, and caption frameworks for consistent brand content.'
+    desc: 'A collection of social templates, graphics, and caption frameworks for consistent brand content.',
+    image: ''
   }
 ];
 
@@ -120,7 +124,6 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
 
       <div className="archive-body">
         <div className="container">
-          {/* Keyed Animated Wrapper for Smooth Transition */}
           <div key={activeTab} className="archive-tab-content-animated">
             {activeTab === 'technical' && (
               <div className="archive-tab-panel active">
@@ -184,16 +187,22 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
                         className="digital-card archive-item-stagger"
                         style={{ '--stagger-idx': i }}
                       >
-                        <div className="mock-grid">
-                          {Array.from({ length: 15 }).map((_, s) => (
-                            <div
-                              key={s}
-                              style={{
-                                background: `hsl(${hue + s * 7}, 60%, ${30 + (s % 3) * 10}%)`
-                              }}
-                            />
-                          ))}
-                        </div>
+                        {p.image ? (
+                          <div className="digital-img-wrap">
+                            <img src={p.image} alt={p.title} className="digital-thumb-img" />
+                          </div>
+                        ) : (
+                          <div className="mock-grid">
+                            {Array.from({ length: 15 }).map((_, s) => (
+                              <div
+                                key={s}
+                                style={{
+                                  background: `hsl(${hue + s * 7}, 60%, ${30 + (s % 3) * 10}%)`
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
                         <div className="dc-body">
                           <span className="num">{String(i + 1).padStart(2, '0')}</span>
                           <h4>{p.title}</h4>
