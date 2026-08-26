@@ -8,7 +8,7 @@ function Hero({ onShowToast }) {
   const [imgLoaded, setImgLoaded] = useState(true);
   const heroRef = useRef(null);
 
-  // 60fps Scroll listener
+  // 60fps Parallax scroll listener
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -25,7 +25,7 @@ function Hero({ onShowToast }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 3D Mouse tilt on hero
+  // 3D Tilt Effect
   const handleMouseMove = (e) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -43,12 +43,22 @@ function Hero({ onShowToast }) {
     onShowToast?.('📄 Add your resume file link here.');
   };
 
-  // Parallax & Disappear calculations
-  const textTranslateX = -scrollY * 0.45;
-  const characterTranslateY = -scrollY * 0.95; // Gerakan meluncur ke atas saat di-scroll
-  const characterScale = Math.max(0.8, 1 - scrollY * 0.0006); // Mengecil perlahan
-  const characterOpacity = Math.max(0, 1 - scrollY / 420); // Menghilang memudar elegan
+  // Parallax calculations
+  const marqueeTranslateX = -scrollY * 0.35;
+  const characterTranslateY = -scrollY * 0.95; // Meluncur naik ke atas saat di-scroll
+  const characterScale = Math.max(0.75, 1 - scrollY * 0.0006); // Mengecil perlahan
+  const characterOpacity = Math.max(0, 1 - scrollY / 420); // Menghilang memudar
   const auraScale = Math.max(0.5, 1 - scrollY * 0.001);
+
+  const marqueeItems = [
+    'System Testing',
+    'UI/UX Design',
+    'Database Design',
+    'Web Development',
+    'API Integration',
+    'Digital Operations',
+    'Problem Solving'
+  ];
 
   return (
     <section
@@ -61,31 +71,36 @@ function Hero({ onShowToast }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* 1. RUNNING TEXT LAYER (Di belakang karakter, z-index: 2) */}
+      {/* 1. RUNNING TEXT SKILLS DI ATAS (Layer di belakang karakter, Z-Index: 2) */}
       <div
-        className="hero-bg-text hero-bg-text-top"
+        className="hero-top-marquee"
         style={{
-          transform: `translate(calc(-50% + ${textTranslateX}px), 0)`,
-          opacity: Math.max(0, 0.85 - scrollY / 500)
+          transform: `translateX(${marqueeTranslateX}px)`,
+          opacity: Math.max(0, 0.9 - scrollY / 450)
         }}
       >
-        <span>ALEX RIVERA &nbsp; PORTFOLIO &nbsp; ALEX RIVERA &nbsp; PORTFOLIO &nbsp;</span>
-        <span>ALEX RIVERA &nbsp; PORTFOLIO &nbsp; ALEX RIVERA &nbsp; PORTFOLIO &nbsp;</span>
+        <div className="hero-marquee-track">
+          {marqueeItems.concat(marqueeItems).map((item, idx) => (
+            <span key={idx} className="marquee-item">
+              <i className="fa-solid fa-circle dot-sep"></i> {item}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div className="container hero-container hero-container-layout">
-        {/* 2. CHARACTER VISUAL LAYER (z-index: 10, di depan teks berjalan & tanpa card) */}
-        <div className="hero-visual hero-visual-standalone">
-          {/* Glowing Aura */}
+      <div className="container hero-container hero-container-stacked">
+        {/* 2. KARAKTER BESAR BEBAS TANPA CARD (Layer Terdepan, Z-Index: 10) */}
+        <div className="hero-visual-standalone">
+          {/* Ambient Glow Aura */}
           <div
-            className="hero-aura"
+            className="hero-aura-large"
             style={{
               transform: `scale(${auraScale}) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)`,
-              opacity: Math.max(0, 1 - scrollY / 450)
+              opacity: Math.max(0, 1 - scrollY / 400)
             }}
           />
 
-          {/* Character Container */}
+          {/* Standalone Character */}
           <div
             className="hero-character-standalone"
             style={{
@@ -98,11 +113,11 @@ function Hero({ onShowToast }) {
               <img
                 src="/profile.png"
                 alt="Alex Rivera Character"
-                className="character-img-clean"
+                className="character-img-huge"
                 onError={() => setImgLoaded(false)}
               />
             ) : (
-              <div className="hero-avatar-fallback">
+              <div className="hero-avatar-standalone">
                 <span className="initials">AR</span>
               </div>
             )}
@@ -130,7 +145,7 @@ function Hero({ onShowToast }) {
           </div>
         </div>
 
-        {/* 3. CONTENT INTRO LAYER (Di bawah teks berjalan) */}
+        {/* 3. KATA-KATA INTRO DI BAGIAN BAWAH */}
         <div className={`hero-content hero-content-bottom ${isVisible ? 'visible' : ''}`}>
           <div className="badge">
             <span className="dot"></span> Available for Work
