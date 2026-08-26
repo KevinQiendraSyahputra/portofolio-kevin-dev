@@ -3,10 +3,10 @@ import { useReveal } from '../hooks/useReveal';
 
 const works = [
   {
-    title: 'Campus Attendance System',
+    title: 'School lending System',
     desc: 'RFID-based attendance tracking with automated photo capture and email notifications for staff and administrators.',
     icon: 'fa-id-badge',
-    image: '/project1.png', // Ganti dengan path foto Anda di folder public/
+    image: 'project1.png',
     from: '#3a6df0',
     to: '#132059'
   },
@@ -14,7 +14,7 @@ const works = [
     title: 'Community Aid Tracker',
     desc: 'Disaster relief coordination platform for registering beneficiaries and monitoring distribution in real time.',
     icon: 'fa-hand-holding-heart',
-    image: '', // Kosongkan atau beri path foto
+    image: '',
     from: '#4dbb8f',
     to: '#0f4b39'
   },
@@ -53,14 +53,15 @@ const works = [
 ];
 
 function Work({ onOpenArchive }) {
-  const { ref, isVisible } = useReveal({ threshold: 0.1 });
+  const { ref, isVisible } = useReveal({ threshold: 0.15 });
   const [activeWork, setActiveWork] = useState(0);
-  const [spacing, setSpacing] = useState(240);
+  const [spacing, setSpacing] = useState(330);
   const touchStartRef = useRef(0);
 
+  // Penyesuaian jarak presisi dan seimbang
   useEffect(() => {
     const handleResize = () => {
-      setSpacing(window.innerWidth < 640 ? 155 : 240);
+      setSpacing(window.innerWidth < 640 ? 170 : window.innerWidth < 1024 ? 260 : 330);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -75,10 +76,14 @@ function Work({ onOpenArchive }) {
     setActiveWork((prev) => (prev - 1 + works.length) % works.length);
   }, []);
 
+  // Timer otomatis ter-reset saat pengguna menekan tombol/interaksi manual
   useEffect(() => {
-    const timer = setInterval(nextWork, 5000);
+    const timer = setInterval(() => {
+      setActiveWork((prev) => (prev + 1) % works.length);
+    }, 5000);
+
     return () => clearInterval(timer);
-  }, [nextWork]);
+  }, [activeWork]);
 
   const handleTouchStart = (e) => {
     touchStartRef.current = e.changedTouches[0].screenX;
@@ -98,6 +103,7 @@ function Work({ onOpenArchive }) {
   return (
     <section id="work" className="parallax-section" ref={ref}>
       <div className="container">
+        {/* Header Section */}
         <div className={`work-head reveal ${isVisible ? 'visible' : ''}`}>
           <div>
             <span className="section-tag">Selected Work</span>
@@ -113,7 +119,8 @@ function Work({ onOpenArchive }) {
           </button>
         </div>
 
-        <div className={`gallery-wrap reveal-scale ${isVisible ? 'visible' : ''}`}>
+        {/* 3D Centered Carousel */}
+        <div className={`gallery-wrap work-gallery-entrance ${isVisible ? 'visible' : ''}`}>
           <button className="gallery-arrow" onClick={prevWork} aria-label="Previous project">
             <i className="fa-solid fa-chevron-left"></i>
           </button>
@@ -131,7 +138,7 @@ function Work({ onOpenArchive }) {
                 if (diff < -n / 2) diff += n;
                 const abs = Math.abs(diff);
 
-                const transform = `translateX(${diff * spacing}px) scale(${1 - abs * 0.13}) rotateY(${diff * -4}deg)`;
+                const transform = `translateX(${diff * spacing}px) scale(${1 - abs * 0.12}) rotateY(${diff * -4}deg)`;
                 const opacity = abs === 0 ? 1 : abs === 1 ? 0.6 : abs === 2 ? 0.2 : 0;
                 const zIndex = 10 - abs;
                 const filter = abs === 0 ? 'none' : `blur(${abs * 1.5}px)`;
@@ -169,7 +176,8 @@ function Work({ onOpenArchive }) {
           </button>
         </div>
 
-        <div className="gallery-info">
+        {/* Info Text */}
+        <div className={`gallery-info work-info-entrance ${isVisible ? 'visible' : ''}`}>
           <h3>{current.title}</h3>
           <p>{current.desc}</p>
           <a
@@ -183,7 +191,8 @@ function Work({ onOpenArchive }) {
           </a>
         </div>
 
-        <div className="gallery-dots">
+        {/* Indicator Dots */}
+        <div className={`gallery-dots work-dots-entrance ${isVisible ? 'visible' : ''}`}>
           {works.map((_, i) => (
             <button
               key={i}

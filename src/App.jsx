@@ -22,12 +22,27 @@ function App() {
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
 
+  // Kunci scroll saat layar intro loading aktif
   useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
+
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [loading]);
 
   useEffect(() => {
     if (isLight) {
