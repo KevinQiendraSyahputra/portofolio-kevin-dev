@@ -61,7 +61,7 @@ function App() {
     <>
       {/* PRELOADER */}
       <div className={`preloader ${!loading ? 'done' : ''}`} id="preloader">
-        <div className="preloader-logo">AR</div>
+        <div className="preloader-logo">LOADING</div>
         <div className="preloader-bar">
           <div className="preloader-bar-inner"></div>
         </div>
