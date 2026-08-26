@@ -1,21 +1,73 @@
 import { useState, useEffect } from 'react';
 
 const techProjects = [
-  { title: 'Campus Attendance System', desc: 'RFID-based student monitoring system with automated photo capture, email notifications, and admin reporting.', stack: 'PYTHON / DJANGO', icons: ['fa-brands fa-python', 'fa-solid fa-database'] },
-  { title: 'ResQ — Disaster Relief Manager', desc: 'QR-code based relief management system for registering beneficiaries and coordinating emergency response.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-brands fa-js'] },
-  { title: 'Fleet Ops Dashboard', desc: 'Terminal management system for monitoring driver attendance, routes, queues, and real-time operations.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-solid fa-database', 'fa-brands fa-js'] },
-  { title: 'DocuFlow — Document Tracker', desc: 'Document tracking system for organizing, archiving, tagging, and approving official records.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-brands fa-js'] },
-  { title: 'StayEasy Rentals', desc: 'Boarding house rental platform for listings, bookings, payments, and reviews with role-based access.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-brands fa-css3-alt', 'fa-brands fa-js'] },
-  { title: 'PayTrack Payroll System', desc: 'PHP-based payroll management system for compensation, deductions, and centralized record management.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-solid fa-database', 'fa-brands fa-js'] },
-  { title: 'Barangay Resident Manager', desc: 'Web-based system for managing resident records, reservations, payments, and community reporting.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-solid fa-database'] },
-  { title: 'GymFlow Membership System', desc: 'Web-based gym management platform for memberships, attendance, payments, and class schedules.', stack: 'CODEIGNITER 4', icons: ['fa-brands fa-php', 'fa-brands fa-js', 'fa-brands fa-css3-alt'] }
+  {
+    title: 'Campus Attendance System',
+    desc: 'RFID-based student monitoring system with automated photo capture, email notifications, and admin reporting.',
+    stack: 'PYTHON / DJANGO',
+    icons: ['fa-brands fa-python', 'fa-solid fa-database']
+  },
+  {
+    title: 'ResQ — Disaster Relief Manager',
+    desc: 'QR-code based relief management system for registering beneficiaries and coordinating emergency response.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-brands fa-js']
+  },
+  {
+    title: 'Fleet Ops Dashboard',
+    desc: 'Terminal management system for monitoring driver attendance, routes, queues, and real-time operations.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-solid fa-database', 'fa-brands fa-js']
+  },
+  {
+    title: 'DocuFlow — Document Tracker',
+    desc: 'Document tracking system for organizing, archiving, tagging, and approving official records.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-brands fa-js']
+  },
+  {
+    title: 'StayEasy Rentals',
+    desc: 'Boarding house rental platform for listings, bookings, payments, and reviews with role-based access.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-brands fa-css3-alt', 'fa-brands fa-js']
+  },
+  {
+    title: 'PayTrack Payroll System',
+    desc: 'PHP-based payroll management system for compensation, deductions, and centralized record management.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-solid fa-database', 'fa-brands fa-js']
+  },
+  {
+    title: 'Barangay Resident Manager',
+    desc: 'Web-based system for managing resident records, reservations, payments, and community reporting.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-brands fa-html5', 'fa-solid fa-database']
+  },
+  {
+    title: 'GymFlow Membership System',
+    desc: 'Web-based gym management platform for memberships, attendance, payments, and class schedules.',
+    stack: 'CODEIGNITER 4',
+    icons: ['fa-brands fa-php', 'fa-brands fa-js', 'fa-brands fa-css3-alt']
+  }
 ];
 
 const digitalProjects = [
-  { title: 'Creative Design Collection', desc: 'A collection of original digital assets, templates, and visual elements created for marketing and branding.' },
-  { title: 'Brand Asset Library', desc: 'Organized workspace of design resources and reference material for efficient content production.' },
-  { title: 'Content Planning & Scheduling', desc: 'A visual content planning system to organize posts, schedules, and publishing activities.' },
-  { title: 'Social Media Content Kit', desc: 'A collection of social templates, graphics, and caption frameworks for consistent brand content.' }
+  {
+    title: 'Creative Design Collection',
+    desc: 'A collection of original digital assets, templates, and visual elements created for marketing and branding.'
+  },
+  {
+    title: 'Brand Asset Library',
+    desc: 'Organized workspace of design resources and reference material for efficient content production.'
+  },
+  {
+    title: 'Content Planning & Scheduling',
+    desc: 'A visual content planning system to organize posts, schedules, and publishing activities.'
+  },
+  {
+    title: 'Social Media Content Kit',
+    desc: 'A collection of social templates, graphics, and caption frameworks for consistent brand content.'
+  }
 ];
 
 function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
@@ -69,7 +121,9 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
           {activeTab === 'technical' && (
             <div className="archive-tab-panel active">
               <span className="section-tag">Archive</span>
-              <h2 className="section-title">Technical</h2>
+              <h2 className="section-title">
+                Technical <span className="accent">Projects</span>
+              </h2>
               <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
                 A complete collection of technical work, systems, and digital projects.
               </p>
@@ -83,7 +137,9 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
                       <span className="stack-label">{p.stack}</span>
                       <div className="stack-icons">
                         {p.icons.map((ic, icIdx) => (
-                          <span key={icIdx}><i className={ic}></i></span>
+                          <span key={icIdx}>
+                            <i className={ic}></i>
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -99,7 +155,9 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
           {activeTab === 'digital' && (
             <div className="archive-tab-panel active">
               <span className="section-tag">Digital Projects</span>
-              <h2 className="section-title">Beyond <span className="accent">Code</span></h2>
+              <h2 className="section-title">
+                Beyond <span className="accent">Code</span>
+              </h2>
               <p className="section-sub" style={{ marginBottom: '2.4rem' }}>
                 Creative, visual, and content projects developed alongside my technical work.
               </p>
@@ -113,7 +171,7 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
                           <div
                             key={s}
                             style={{
-                              background: `hsl(${hue + s * 7}, 60%, ${30 + ((s % 3) * 10)}%)`
+                              background: `hsl(${hue + s * 7}, 60%, ${30 + (s % 3) * 10}%)`
                             }}
                           />
                         ))}
@@ -131,7 +189,11 @@ function ArchiveModal({ isOpen, onClose, onToggleTheme, isLight }) {
           )}
 
           <div className="archive-cta">
-            <h3>Have a project in mind?<br />Let's build something useful.</h3>
+            <h3>
+              Have a project in mind?
+              <br />
+              Let's build something useful.
+            </h3>
             <a
               href="#contact"
               className="btn-primary btn-magnetic"
