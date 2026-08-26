@@ -1,18 +1,18 @@
 import { useReveal } from '../hooks/useReveal';
 
 const techIcons = [
-  { icon: 'fa-brands fa-html5', color: '#e34f26' },
-  { icon: 'fa-brands fa-css3-alt', color: '#264de4' },
-  { icon: 'fa-brands fa-js', color: '#f0db4f' },
-  { icon: 'fa-brands fa-react', color: '#61dafb' },
-  { icon: 'fa-brands fa-php', color: '#8993be' },
-  { icon: 'fa-brands fa-python', color: '#4b8bbe' },
-  { icon: 'fa-brands fa-git-alt', color: '#f1502f' },
-  { icon: 'fa-brands fa-figma', color: '#a259ff' },
-  { icon: 'fa-brands fa-google', color: '#4285f4' },
-  { icon: 'fa-brands fa-node', color: '#83cd29' },
-  { icon: 'fa-solid fa-database', color: '#4479a1' },
-  { icon: 'fa-brands fa-bootstrap', color: '#7952b3' },
+  { name: 'HTML5', icon: 'fa-brands fa-html5', color: '#e34f26' },
+  { name: 'CSS3', icon: 'fa-brands fa-css3-alt', color: '#264de4' },
+  { name: 'JavaScript', icon: 'fa-brands fa-js', color: '#f0db4f' },
+  { name: 'React', icon: 'fa-brands fa-react', color: '#61dafb' },
+  { name: 'PHP', icon: 'fa-brands fa-php', color: '#777bb4' },
+  { name: 'Python', icon: 'fa-brands fa-python', color: '#4b8bbe' },
+  { name: 'Git', icon: 'fa-brands fa-git-alt', color: '#f1502f' },
+  { name: 'Figma', icon: 'fa-brands fa-figma', color: '#a259ff' },
+  { name: 'Google Cloud / Tools', icon: 'fa-brands fa-google', color: '#4285f4' },
+  { name: 'Node.js', icon: 'fa-brands fa-node', color: '#83cd29' },
+  { name: 'Database / SQL', icon: 'fa-solid fa-database', color: '#00758f' },
+  { name: 'Bootstrap', icon: 'fa-brands fa-bootstrap', color: '#7952b3' },
 ];
 
 function Services() {
@@ -28,9 +28,19 @@ function Services() {
             <p className="section-sub">
               I combine technical, problem-solving, and digital skills to build reliable systems, test software, manage data, and support efficient workflows.
             </p>
+            
+            {/* Tech Icons Grid */}
             <div className={`tech-grid stagger-children ${isVisible ? 'visible' : ''}`}>
               {techIcons.map((t, i) => (
-                <div key={i} className="tech-icon" style={{ color: t.color }}>
+                <div
+                  key={i}
+                  className="tech-icon"
+                  title={t.name}
+                  style={{
+                    '--brand-color': t.color,
+                    color: t.color
+                  }}
+                >
                   <i className={t.icon}></i>
                 </div>
               ))}
