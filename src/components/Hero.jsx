@@ -8,24 +8,36 @@ function Hero({ onShowToast }) {
   const [imgLoaded, setImgLoaded] = useState(true);
   const heroRef = useRef(null);
 
-  // 60fps Parallax scroll listener
+  // Smooth Lerp Scroll Animation Loop (Menghilangkan sentakan mouse wheel)
   useEffect(() => {
-    let ticking = false;
+    let rafId;
+    let currentScroll = window.scrollY;
+    let targetScroll = window.scrollY;
+
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
+      targetScroll = window.scrollY;
+    };
+
+    const updateSmoothScroll = () => {
+      const diff = targetScroll - currentScroll;
+      // Damping interpolation factor (0.08 = lembut & responsif)
+      if (Math.abs(diff) > 0.05) {
+        currentScroll += diff * 0.085;
+        setScrollY(currentScroll);
       }
+      rafId = requestAnimationFrame(updateSmoothScroll);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    rafId = requestAnimationFrame(updateSmoothScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
-  // 3D Tilt Effect
+  // 3D Mouse Tilt
   const handleMouseMove = (e) => {
     if (!heroRef.current) return;
     const rect = heroRef.current.getBoundingClientRect();
@@ -43,12 +55,15 @@ function Hero({ onShowToast }) {
     onShowToast?.('📄 Add your resume file link here.');
   };
 
-  // Parallax calculations
+  // Kurva Halus S-Curve Fade Out & Fade In (Cosine Ease)
+  const fadeProgress = Math.min(1, Math.max(0, scrollY / 420));
+  const smoothFade = (1 + Math.cos(fadeProgress * Math.PI)) / 2; // 1 -> 0 secara mulus
+
+  // Transformasi Parallax
   const marqueeTranslateX = -scrollY * 0.35;
-  const characterTranslateY = -scrollY * 0.95; // Meluncur naik ke atas saat di-scroll
-  const characterScale = Math.max(0.75, 1 - scrollY * 0.0006); // Mengecil perlahan
-  const characterOpacity = Math.max(0, 1 - scrollY / 420); // Menghilang memudar
-  const auraScale = Math.max(0.5, 1 - scrollY * 0.001);
+  const characterTranslateY = -scrollY * 0.92;
+  const characterScale = Math.max(0.72, 1 - scrollY * 0.00065);
+  const auraScale = Math.max(0.4, 1 - scrollY * 0.001);
 
   const marqueeItems = [
     'System Testing',
@@ -76,7 +91,7 @@ function Hero({ onShowToast }) {
         className="hero-top-marquee"
         style={{
           transform: `translateX(${marqueeTranslateX}px)`,
-          opacity: Math.max(0, 0.9 - scrollY / 450)
+          opacity: Math.max(0, smoothFade * 0.85)
         }}
       >
         <div className="hero-marquee-track">
@@ -96,7 +111,7 @@ function Hero({ onShowToast }) {
             className="hero-aura-large"
             style={{
               transform: `scale(${auraScale}) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)`,
-              opacity: Math.max(0, 1 - scrollY / 400)
+              opacity: Math.max(0, smoothFade)
             }}
           />
 
@@ -105,8 +120,7 @@ function Hero({ onShowToast }) {
             className="hero-character-standalone"
             style={{
               transform: `perspective(1200px) rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg) translateY(${characterTranslateY}px) scale(${characterScale})`,
-              opacity: characterOpacity,
-              transition: 'transform 0.12s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.15s ease-out'
+              opacity: smoothFade
             }}
           >
             {imgLoaded ? (
@@ -127,8 +141,8 @@ function Hero({ onShowToast }) {
           <div
             className="floating-badge floating-badge--top"
             style={{
-              transform: `translate(${mousePos.x * 16}px, ${-scrollY * 0.4}px)`,
-              opacity: characterOpacity
+              transform: `translate(${mousePos.x * 16}px, ${-scrollY * 0.38}px)`,
+              opacity: smoothFade
             }}
           >
             <i className="fa-solid fa-briefcase"></i> 20+ Projects
@@ -137,8 +151,8 @@ function Hero({ onShowToast }) {
           <div
             className="floating-badge floating-badge--bottom"
             style={{
-              transform: `translate(${mousePos.x * -12}px, ${-scrollY * 0.25}px)`,
-              opacity: characterOpacity
+              transform: `translate(${mousePos.x * -12}px, ${-scrollY * 0.22}px)`,
+              opacity: smoothFade
             }}
           >
             <i className="fa-solid fa-graduation-cap"></i> BSIT Graduate

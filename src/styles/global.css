@@ -669,7 +669,7 @@ section {
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
 /* ===================================================================
-   HERO (TOP SKILL MARQUEE + LARGE STANDALONE CHARACTER + BOTTOM INTRO)
+   HERO (SMOOTH PARALLAX, TOP MARQUEE & CLEAN LARGE CHARACTER)
 =================================================================== */
 .hero {
   min-height: 100vh;
@@ -683,7 +683,7 @@ section {
   z-index: 1;
 }
 
-/* Marquee Skills di Bagian Atas di Belakang Karakter */
+/* Marquee Skills di Bagian Atas */
 .hero-top-marquee {
   position: absolute;
   top: 10%;
@@ -694,6 +694,7 @@ section {
   pointer-events: none;
   z-index: 2;
   will-change: transform, opacity;
+  transition: opacity 0.25s ease-out;
   animation: heroMarqueeScroll 40s linear infinite;
 }
 
@@ -735,7 +736,7 @@ section {
   width: 100%;
 }
 
-/* Visual Karakter Besar (Bebas tanpa Card & Z-Index Paling Depan) */
+/* Standalone Visual Area */
 .hero-visual-standalone {
   position: relative;
   display: flex;
@@ -756,7 +757,8 @@ section {
   filter: blur(80px);
   pointer-events: none;
   z-index: 1;
-  transition: transform 0.2s ease-out;
+  will-change: transform, opacity;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease-out;
 }
 
 .hero-character-standalone {
@@ -766,9 +768,9 @@ section {
   justify-content: center;
   align-items: center;
   will-change: transform, opacity;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
-/* Gambar Karakter Diperbesar dan Bersih */
 .character-img-huge {
   width: auto;
   max-width: 540px;
@@ -819,7 +821,8 @@ section {
   gap: 0.5rem;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   z-index: 12;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  will-change: transform, opacity;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s ease-out;
 }
 
 .floating-badge i {
@@ -831,7 +834,7 @@ section {
 .floating-badge--top { top: 8%; right: calc(50% - 320px); }
 .floating-badge--bottom { bottom: 12%; left: calc(50% - 320px); }
 
-/* Teks Kata-Kata Intro di Bagian Bawah */
+/* Teks Kata-Kata Intro di Bawah */
 .hero-content-bottom {
   display: flex;
   flex-direction: column;
