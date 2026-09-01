@@ -125,7 +125,7 @@ function Hero({ onShowToast }) {
           >
             {imgLoaded ? (
               <img
-                src="/profile.jpg"
+                src="/profile.jpeg"
                 alt="Alex Rivera Character"
                 className="character-img-huge"
                 onError={() => setImgLoaded(false)}
